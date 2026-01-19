@@ -28,6 +28,10 @@ public class Player {
         }
     }
     
+    public Card extractCard(int index) {
+        return cards.remove(index);
+    }
+    
     @Override
     public String toString() {
         int cardNo = 0;
