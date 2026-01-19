@@ -5,6 +5,7 @@
 package uno;
 
 import java.util.ArrayList;
+import java.util.Random;
 import uno.cards.Card;
 import uno.cards.ColorCard.Color;
 import uno.cards.Draw2Card;
@@ -58,6 +59,15 @@ public class Deck {
     
     public void addCard(Card card) {
         cards.add(card);
+    }
+    
+    public int size() {
+        return cards.size();
+    }
+    
+    public Card extractRandCard() {
+        Random rand = new Random();
+        return cards.remove(rand.nextInt(cards.size()));
     }
     
     @Override
