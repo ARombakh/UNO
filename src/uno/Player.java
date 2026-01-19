@@ -35,6 +35,7 @@ public class Player {
         
         for (Object card : cards) {
             result += cardNo + ". " + card.toString();
+            cardNo++;
         }
         
         return result;
