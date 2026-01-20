@@ -18,6 +18,10 @@ public class Player {
         cards = new ArrayList<>();
     }
     
+    public int getSize() {
+        return cards.size();
+    }
+    
     public void addCard(Card card) {
         cards.add(card);
     }
