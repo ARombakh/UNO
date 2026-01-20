@@ -38,12 +38,11 @@ public class UNO {
         int turns = 5;
         int turn = 0;
 
-        while (turn < turns) {
+        while (controller.checkPlayersCards(players) == null) {
             System.out.println("Player " + currPlayerIX);
             discardPile.addCard(controller.makeTurn(currPlayerIX, 0));
             currPlayerIX = controller.nextPlayer(currPlayerIX,
                     discardPile.getLastCard());
-            turn++;
         }
     }
 }
