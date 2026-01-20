@@ -32,6 +32,29 @@ public class Player {
         return cards.remove(index);
     }
     
+    public ArrayList<String> outputOptions(boolean takeCardExists,
+            boolean chooseColor) {
+        ArrayList<String> options = new ArrayList<>();
+        
+        if(takeCardExists) {
+            options.add("Take card from the deck\n");
+        }
+        
+        options.add("Say Uno\n");
+        
+        if (chooseColor) {
+            for (Card.Color color : Card.Color.values()) {
+                options.add(color.name());
+            }
+        } else {
+            for (Card card : cards) {
+                options.add(card.toString());
+            }            
+        }
+
+        return options;
+    }
+    
     @Override
     public String toString() {
         int cardNo = 0;

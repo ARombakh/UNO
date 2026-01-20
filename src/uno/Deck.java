@@ -7,14 +7,7 @@ package uno;
 import java.util.ArrayList;
 import java.util.Random;
 import uno.cards.Card;
-import uno.cards.ColorCard.Color;
-import uno.cards.Draw2Card;
-import uno.cards.NumberCard;
-import static uno.cards.NumberCard.END_RANGE;
-import static uno.cards.NumberCard.START_RANGE;
-import uno.cards.ReverseCard;
-import uno.cards.SkipCard;
-import uno.cards.WildCard;
+import uno.cards.Card.Color;
 
 /**
  *
@@ -22,39 +15,47 @@ import uno.cards.WildCard;
  */
 public class Deck {
     public static final int COLOR_CARDS_QTY = 10;
+    public static final int START_RANGE = 0;
+    public static final int END_RANGE = 9;
     private ArrayList<Card> cards;
     
     public Deck() {
         this.cards = new ArrayList<>();
-        
+    }
+    
+    public void initDeck() {
         Card card;
         
         for (Color color : Color.values()) {
             for (int i = START_RANGE; i <= END_RANGE; i++) {
                 if (i != 0) {
-                    card = new NumberCard(color, i);
+                    card = new Card(Card.CardType.NUMBER, color, i);
                     addCard(card);                    
                 }                
-                card = new NumberCard(color, i);
+                card = new Card(Card.CardType.NUMBER, color, i);
                 addCard(card);
             }
             
             for (int i = 0; i < 2; i++) {
-                card = new ReverseCard(color);
+                card = new Card(Card.CardType.REVERSE, color);
                 addCard(card);
-                card = new SkipCard(color);
+                card = new Card(Card.CardType.SKIP, color);
                 addCard(card);
-                card = new Draw2Card(color); 
+                card = new Card(Card.CardType.DRAW_2, color);
                 addCard(card);
             }
         }
-        
+
         for (int i = 0; i < 4; i++) {
-            card = new WildCard(true);
+            card = new Card(Card.CardType.WILD);
             addCard(card);
-            card = new WildCard(false);
+            card = new Card(Card.CardType.WILD_DRAW_4);
             addCard(card);
         }
+    }
+    
+    public Card getLastCard() {
+        return cards.getLast();
     }
     
     public void addCard(Card card) {
