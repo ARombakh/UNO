@@ -50,8 +50,8 @@ public class Controller {
             skip = true;
         }
         
-        nextPlayerIX = playerIX + direction;
-        if (skip) nextPlayerIX += direction;
+        nextPlayerIX = nextPlOrder(playerIX);
+        if (skip) nextPlayerIX = nextPlOrder(nextPlayerIX);
         
         return nextPlayerIX;
     }
@@ -67,23 +67,42 @@ public class Controller {
         
         return 0;
     }
+    
+    public Integer checkPlayersCards(Player[] players) {
+        for (int i = 0; i < players.length; i++) {
+            if (players[i].getSize() == 0) {
+                return i;
+            }
+        }
+        
+        return null;
+    }
 
     public Card makeTurn(int playerIX, int cardsToTake) {
-        Scanner sc = new Scanner(System.in);
-        
-        System.out.println("Current card:");
-        System.out.println(discardPile.getLastCard());
-        
-        System.out.println("Choose card index:");
-        System.out.println(players[playerIX]);
-        
-        Card card = players[playerIX].extractCard(sc.nextInt());
-        
-        if (discardPile.getLastCard().matches(card)) {
-            System.out.println("Card successfully put");
-            return card;
-        } else {
-            return null;
+        for (int i = 0; i < cardsToTake; i++) {
+            players[playerIX].addCard(deck.extractRandCard());
         }
+        
+        Scanner sc = new Scanner(System.in);
+        boolean turnOver = false;
+        Card card = null;
+        
+        while (!turnOver) {
+            System.out.println("Current card to match:");
+            System.out.println(discardPile.getLastCard());
+
+            System.out.println("Choose card index:");
+            System.out.println(players[playerIX]);
+
+            card = players[playerIX].extractCard(sc.nextInt());
+
+            if (discardPile.getLastCard().matches(card)) {
+                System.out.println("Card successfully put");
+                turnOver = true;
+            } else {
+                System.out.println("Can't use this card, choose another one");
+            }            
+        }
+        return card;
     }
 }
