@@ -61,12 +61,10 @@ public class Player {
     
     @Override
     public String toString() {
-        int cardNo = 0;
         String result = "";
         
         for (Object card : cards) {
-            result += cardNo + ". " + card.toString();
-            cardNo++;
+            result += card.toString();
         }
         
         return result;
