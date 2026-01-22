@@ -4,8 +4,6 @@
  */
 package uno;
 
-import uno.cards.Card;
-
 /**
  *
  * @author artyom

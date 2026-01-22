@@ -6,8 +6,7 @@ package uno;
 
 import java.util.ArrayList;
 import java.util.Random;
-import uno.cards.Card;
-import uno.cards.Card.Color;
+import uno.Card.Color;
 
 /**
  *

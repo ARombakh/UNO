@@ -6,7 +6,6 @@ package uno;
 
 import java.util.Scanner;
 import static uno.UNO.PLAYERS_QTY;
-import uno.cards.Card;
 
 /**
  *
