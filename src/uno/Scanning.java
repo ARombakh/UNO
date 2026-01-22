@@ -21,8 +21,8 @@ public class Scanning {
     public int promptUser() {
         boolean running = true;
         while (running) {            
+            System.out.println("Enter number:");
             try {
-                System.out.println("Enter number:");
                 output = Integer.parseInt(sc.nextLine());
                 running = false;
             } catch (Exception e) {
