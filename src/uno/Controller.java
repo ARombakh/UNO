@@ -82,7 +82,7 @@ public class Controller {
             players[playerIX].addCard(deck.extractRandCard());
         }
         
-        Scanner sc = new Scanner(System.in);
+        Scanning sca = new Scanning();
         boolean turnOver = false;
         Card card = null;
         
@@ -93,7 +93,7 @@ public class Controller {
             System.out.println("Choose card index:");
             System.out.println(players[playerIX]);
 
-            card = players[playerIX].extractCard(sc.nextInt());
+            card = players[playerIX].extractCard(sca.promptUser());
 
             if (discardPile.getLastCard().matches(card)) {
                 System.out.println("Card successfully put");
