@@ -51,20 +51,32 @@ public class Controller {
             System.out.println("Current card to match:");
             System.out.println(lastCard);
 
-            System.out.println("Choose card index:");
-            System.out.println(player);
+            PlayerAction pa = new PlayerAction(player);
+            Action action = pa.askAction();
+            
+            if (action instanceof PlayCard playCard) {
+                int cardIX = playCard.getCardIX();
+                
+                card = player.getCard(cardIX);
 
-            int cardIX = sca.promptUser();
-            card = player.getCard(cardIX);
-
-            if (lastCard.discardMatchesNew(card)) {
-                card = player.extractCard(cardIX);
-                System.out.println("Card successfully put");
-                turnOver = true;
+                if (lastCard.discardMatchesNew(card)) {
+                    card = player.extractCard(cardIX);
+                    System.out.println("Card successfully put");
+                    turnOver = true;
+                } else {
+                    System.out.println("Can't use this card,"
+                            + " choose another one");
+                } 
             } else {
-                System.out.println("Can't use this card,"
-                        + " choose another one");
-            }            
+                if (action instanceof TakeCard) {
+                    card = deck.extractRandCard();
+                    player.addCard(card);
+                    System.out.println("The player took card:\n" + card);
+                    return null;
+                } else {
+                    throw new IllegalArgumentException("Illegal action");
+                }
+            }
         }
 
         return card;

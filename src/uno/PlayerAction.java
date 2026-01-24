@@ -41,17 +41,4 @@ public class PlayerAction {
         
         return action;
     }
-    
-    public static void main(String[] args) {
-        Deck deck = new Deck();
-        deck.initDeck();
-        
-        Player player = new Player();
-        
-        player.fillHand(deck);
-        
-        PlayerAction pa = new PlayerAction(player);
-        
-        System.out.println(pa.askAction());
-    }
 }
