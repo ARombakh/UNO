@@ -12,6 +12,12 @@ public class UNO {
     public static final int CARDS_ON_HAND = 7;
     public static final int PLAYERS_QTY = 3;
     private int direction;
+    
+    public boolean isSkip(Card card) {
+        return card.getCardtype() == Card.CardType.SKIP ||
+            card.getCardtype() == Card.CardType.DRAW_2 ||
+            card.getCardtype() == Card.CardType.WILD_DRAW_4;
+    }
 
     public int nextPlOrder(int playerIX) {
         if (playerIX + direction == -1) {
@@ -26,20 +32,12 @@ public class UNO {
     }
     
     public int nextPlayer(int playerIX, Card card) {
-        boolean skip = false;  // Skipping player or not
         int nextPlayerIX;
         if (card.getCardtype() == Card.CardType.REVERSE) {
             this.direction = - this.direction;
         }
         
-        if (card.getCardtype() == Card.CardType.SKIP ||
-            card.getCardtype() == Card.CardType.DRAW_2 ||
-            card.getCardtype() == Card.CardType.WILD_DRAW_4) {
-            skip = true;
-        }
-        
         nextPlayerIX = nextPlOrder(playerIX);
-        if (skip) nextPlayerIX = nextPlOrder(nextPlayerIX);
         
         return nextPlayerIX;
     }
@@ -78,12 +76,22 @@ public class UNO {
         Controller controller;
         
         int currPlayerIX = 0;
+        Card card;
+        boolean isSkip = false;
 
         while (uno.checkPlayersCards(players) == null) {
             controller = new Controller(deck, players[currPlayerIX],
                     discardPile.getLastCard());
             System.out.println("Player " + currPlayerIX);
-            discardPile.addCard(controller.makeTurn());
+            card = controller.makeTurn(isSkip);   // isSkip
+            if (card != null) {
+                discardPile.addCard(card);
+                isSkip = uno.isSkip(card);
+            } else {
+                System.out.println("The Player " + currPlayerIX +
+                    " skips the turn");
+                isSkip = false;
+            }
             currPlayerIX = uno.nextPlayer(currPlayerIX,
                     discardPile.getLastCard());
         }

@@ -34,32 +34,41 @@ public class Controller {
         return 0;
     }
        
-    public Card makeTurn() {
-        int cardsToTake = takeCards(lastCard);
-        for (int i = 0; i < cardsToTake; i++) {
-            player.addCard(deck.extractRandCard());
-        }
-        
-        Scanning sca = new Scanning();
-        boolean turnOver = false;
-        Card card = null;
-        
-        while (!turnOver) {
-            System.out.println("Current card to match:");
-            System.out.println(lastCard);
-        
-            System.out.println("Choose card index:");
-            System.out.println(player);
+    public Card makeTurn(boolean isSkip) {        
+        if (!isSkip) {
+            Scanning sca = new Scanning();
+            boolean turnOver = false;
+            Card card = null;
 
-            card = player.extractCard(sca.promptUser());
+            while (!turnOver) {
+                System.out.println("Current card to match:");
+                System.out.println(lastCard);
 
-            if (lastCard.discardMatchesNew(card)) {
-                System.out.println("Card successfully put");
-                turnOver = true;
-            } else {
-                System.out.println("Can't use this card, choose another one");
-            }            
+                System.out.println("Choose card index:");
+                System.out.println(player);
+
+                int cardIX = sca.promptUser();
+                card = player.getCard(cardIX);
+
+                if (lastCard.discardMatchesNew(card)) {
+                    card = player.extractCard(cardIX);
+                    System.out.println("Card successfully put");
+                    turnOver = true;
+                } else {
+                    System.out.println("Can't use this card,"
+                            + " choose another one");
+                }            
+            }
+            
+            return card;
+        } else {
+            int cardsToTake = takeCards(lastCard);
+            for (int i = 0; i < cardsToTake; i++) {
+                player.addCard(deck.extractRandCard());
+            }
+            System.out.println(cardsToTake + " cards taken");
+            
+            return null;
         }
-        return card;
     }
 }
