@@ -64,7 +64,7 @@ public class Card {
     }
 
     // Function to match card from discard pile with card extracted from hand
-    public boolean matches(Card c) {
+    public boolean discardMatchesNew(Card c) {
         if (c == null) return false;
         
         // If the color of card in hand is null, it means it is wildcard and

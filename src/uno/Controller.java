@@ -13,46 +13,13 @@ import static uno.UNO.PLAYERS_QTY;
  */
 public class Controller {
     private Deck deck;
-    private Player[] players;
-    public Deck discardPile;
-    private int direction;
+    private Player player;   // Change to player
+    public Deck discardPile;    // Change to current card
     
-    public Controller(Deck deck, Player[] players, Deck discardPile) {
+    public Controller(Deck deck, Player player, Deck discardPile) {
         this.deck = deck;
-        this.players = players;
+        this.player = player;
         this.discardPile = discardPile;
-        this.direction = 1;
-    }
-    
-    public int nextPlOrder(int playerIX) {
-        if (playerIX + direction == -1) {
-            return PLAYERS_QTY - 1;
-        } else {
-            if (playerIX + direction == PLAYERS_QTY) {
-                return 0;
-            } else {
-                return playerIX + direction;
-            }
-        }
-    }
-    
-    public int nextPlayer(int playerIX, Card card) {
-        boolean skip = false;  // Skipping player or not
-        int nextPlayerIX;
-        if (card.getCardtype() == Card.CardType.REVERSE) {
-            this.direction = - this.direction;
-        }
-        
-        if (card.getCardtype() == Card.CardType.SKIP ||
-            card.getCardtype() == Card.CardType.DRAW_2 ||
-            card.getCardtype() == Card.CardType.WILD_DRAW_4) {
-            skip = true;
-        }
-        
-        nextPlayerIX = nextPlOrder(playerIX);
-        if (skip) nextPlayerIX = nextPlOrder(nextPlayerIX);
-        
-        return nextPlayerIX;
     }
     
     public int takeCards(Card card) {
@@ -66,20 +33,11 @@ public class Controller {
         
         return 0;
     }
-    
-    public Integer checkPlayersCards(Player[] players) {
-        for (int i = 0; i < players.length; i++) {
-            if (players[i].getSize() == 0) {
-                return i;
-            }
-        }
-        
-        return null;
-    }
-
-    public Card makeTurn(int playerIX, int cardsToTake) {
+       
+    public Card makeTurn() {
+        int cardsToTake = takeCards(discardPile.getLastCard());
         for (int i = 0; i < cardsToTake; i++) {
-            players[playerIX].addCard(deck.extractRandCard());
+            player.addCard(deck.extractRandCard());
         }
         
         Scanning sca = new Scanning();
@@ -89,13 +47,13 @@ public class Controller {
         while (!turnOver) {
             System.out.println("Current card to match:");
             System.out.println(discardPile.getLastCard());
-
+        
             System.out.println("Choose card index:");
-            System.out.println(players[playerIX]);
+            System.out.println(player);
 
-            card = players[playerIX].extractCard(sca.promptUser());
+            card = player.extractCard(sca.promptUser());
 
-            if (discardPile.getLastCard().matches(card)) {
+            if (discardPile.getLastCard().discardMatchesNew(card)) {
                 System.out.println("Card successfully put");
                 turnOver = true;
             } else {

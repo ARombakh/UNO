@@ -11,11 +11,56 @@ package uno;
 public class UNO {
     public static final int CARDS_ON_HAND = 7;
     public static final int PLAYERS_QTY = 3;
+    private int direction;
+
+    public int nextPlOrder(int playerIX) {
+        if (playerIX + direction == -1) {
+            return PLAYERS_QTY - 1;
+        } else {
+            if (playerIX + direction == PLAYERS_QTY) {
+                return 0;
+            } else {
+                return playerIX + direction;
+            }
+        }
+    }
+    
+    public int nextPlayer(int playerIX, Card card) {
+        boolean skip = false;  // Skipping player or not
+        int nextPlayerIX;
+        if (card.getCardtype() == Card.CardType.REVERSE) {
+            this.direction = - this.direction;
+        }
+        
+        if (card.getCardtype() == Card.CardType.SKIP ||
+            card.getCardtype() == Card.CardType.DRAW_2 ||
+            card.getCardtype() == Card.CardType.WILD_DRAW_4) {
+            skip = true;
+        }
+        
+        nextPlayerIX = nextPlOrder(playerIX);
+        if (skip) nextPlayerIX = nextPlOrder(nextPlayerIX);
+        
+        return nextPlayerIX;
+    }
+    
+    public Integer checkPlayersCards(Player[] players) {
+        for (int i = 0; i < players.length; i++) {
+            if (players[i].getSize() == 0) {
+                return i;
+            }
+        }
+        
+        return null;
+    }
     
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        UNO uno = new UNO();
+        uno.direction = 1;
+        
         Deck deck = new Deck();
         deck.initDeck();
         
@@ -30,16 +75,16 @@ public class UNO {
         
         discardPile.addCard(deck.extractRandCard());
         
-        Controller controller = new Controller(deck, players, discardPile);
+        Controller controller;
         
         int currPlayerIX = 0;
-        int turns = 5;
-        int turn = 0;
 
-        while (controller.checkPlayersCards(players) == null) {
+        while (uno.checkPlayersCards(players) == null) {
+            controller = new Controller(deck, players[currPlayerIX],
+                    discardPile);
             System.out.println("Player " + currPlayerIX);
-            discardPile.addCard(controller.makeTurn(currPlayerIX, 0));
-            currPlayerIX = controller.nextPlayer(currPlayerIX,
+            discardPile.addCard(controller.makeTurn());
+            currPlayerIX = uno.nextPlayer(currPlayerIX,
                     discardPile.getLastCard());
         }
     }

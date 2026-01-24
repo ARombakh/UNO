@@ -22,6 +22,10 @@ public class Player {
         return cards.size();
     }
     
+    public Card getCard(int i) {
+        return cards.get(i);
+    }
+    
     public void addCard(Card card) {
         cards.add(card);
     }
