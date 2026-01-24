@@ -5,6 +5,7 @@
 package uno;
 
 import java.util.Scanner;
+import uno.Card.Color;
 import static uno.UNO.PLAYERS_QTY;
 
 /**
@@ -42,6 +43,12 @@ public class Controller {
         return 0;
     }
     
+    public Color chooseColor() {
+        PlayerAction pa = new PlayerAction(player);
+        
+        return pa.askColor();
+    }
+    
     public Card playCard() {
         Scanning sca = new Scanning();
         boolean turnOver = false;
@@ -61,18 +68,23 @@ public class Controller {
 
                 if (lastCard.discardMatchesNew(card)) {
                     card = player.extractCard(cardIX);
+                    if (card.getCardtype() == Card.CardType.WILD_DRAW_4 ||
+                        card.getCardtype() == Card.CardType.WILD) {
+                        card.setColor(chooseColor());
+                    }
                     System.out.println("Card successfully put");
                     turnOver = true;
                 } else {
-                    System.out.println("Can't use this card,"
-                            + " choose another one");
+                    System.out.println("Can't use this card, "
+                            + "choose another one");
                 } 
             } else {
                 if (action instanceof TakeCard) {
                     card = deck.extractRandCard();
                     player.addCard(card);
                     System.out.println("The player took card:\n" + card);
-                    return null;
+                    card = null;
+                    turnOver = true;
                 } else {
                     throw new IllegalArgumentException("Illegal action");
                 }

@@ -4,6 +4,8 @@
  */
 package uno;
 
+import uno.Card.Color;
+
 /**
  *
  * @author artyom
@@ -40,5 +42,29 @@ public class PlayerAction {
         }
         
         return action;
+    }
+    
+    public Color askColor() {
+        int menuItem = 0;
+        System.out.println("Choose color:");
+        
+        for (Object value : Color.values()) {
+            System.out.println(menuItem + ". " + value.toString());
+            menuItem++;
+        }
+        
+        int option = sca.promptUser();
+        action = new ChooseColor(option);
+        
+        menuItem = 0;
+        
+        for (Object value : Color.values()) {
+            if (option == menuItem) {
+                return (Color) value;
+            }
+            menuItem++;
+        }
+        
+        return null;
     }
 }
