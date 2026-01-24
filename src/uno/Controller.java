@@ -13,8 +13,8 @@ import static uno.UNO.PLAYERS_QTY;
  */
 public class Controller {
     private Deck deck;
-    private Player player;   // Change to player
-    public Card lastCard;    // Change to current card
+    private Player player;
+    public Card lastCard;
     
     public Controller(Deck deck, Player player, Card lastCard) {
         this.deck = deck;
