@@ -22,6 +22,14 @@ public class Controller {
         this.lastCard = lastCard;
     }
     
+    public void takeCards() {
+        int cardsToTake = takeCards(lastCard);
+        for (int i = 0; i < cardsToTake; i++) {
+            player.addCard(deck.extractRandCard());
+        }
+        System.out.println(cardsToTake + " cards taken");
+    }
+    
     public int takeCards(Card card) {
         if (card.getCardtype() == Card.CardType.DRAW_2) {
             return 2;
@@ -33,41 +41,40 @@ public class Controller {
         
         return 0;
     }
+    
+    public Card playCard() {
+        Scanning sca = new Scanning();
+        boolean turnOver = false;
+        Card card = null;
+
+        while (!turnOver) {
+            System.out.println("Current card to match:");
+            System.out.println(lastCard);
+
+            System.out.println("Choose card index:");
+            System.out.println(player);
+
+            int cardIX = sca.promptUser();
+            card = player.getCard(cardIX);
+
+            if (lastCard.discardMatchesNew(card)) {
+                card = player.extractCard(cardIX);
+                System.out.println("Card successfully put");
+                turnOver = true;
+            } else {
+                System.out.println("Can't use this card,"
+                        + " choose another one");
+            }            
+        }
+
+        return card;
+    }
        
     public Card makeTurn(boolean isSkip) {        
         if (!isSkip) {
-            Scanning sca = new Scanning();
-            boolean turnOver = false;
-            Card card = null;
-
-            while (!turnOver) {
-                System.out.println("Current card to match:");
-                System.out.println(lastCard);
-
-                System.out.println("Choose card index:");
-                System.out.println(player);
-
-                int cardIX = sca.promptUser();
-                card = player.getCard(cardIX);
-
-                if (lastCard.discardMatchesNew(card)) {
-                    card = player.extractCard(cardIX);
-                    System.out.println("Card successfully put");
-                    turnOver = true;
-                } else {
-                    System.out.println("Can't use this card,"
-                            + " choose another one");
-                }            
-            }
-            
-            return card;
+            return playCard();
         } else {
-            int cardsToTake = takeCards(lastCard);
-            for (int i = 0; i < cardsToTake; i++) {
-                player.addCard(deck.extractRandCard());
-            }
-            System.out.println(cardsToTake + " cards taken");
-            
+            takeCards();
             return null;
         }
     }
