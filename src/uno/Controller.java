@@ -14,12 +14,12 @@ import static uno.UNO.PLAYERS_QTY;
 public class Controller {
     private Deck deck;
     private Player player;   // Change to player
-    public Deck discardPile;    // Change to current card
+    public Card lastCard;    // Change to current card
     
-    public Controller(Deck deck, Player player, Deck discardPile) {
+    public Controller(Deck deck, Player player, Card lastCard) {
         this.deck = deck;
         this.player = player;
-        this.discardPile = discardPile;
+        this.lastCard = lastCard;
     }
     
     public int takeCards(Card card) {
@@ -35,7 +35,7 @@ public class Controller {
     }
        
     public Card makeTurn() {
-        int cardsToTake = takeCards(discardPile.getLastCard());
+        int cardsToTake = takeCards(lastCard);
         for (int i = 0; i < cardsToTake; i++) {
             player.addCard(deck.extractRandCard());
         }
@@ -46,14 +46,14 @@ public class Controller {
         
         while (!turnOver) {
             System.out.println("Current card to match:");
-            System.out.println(discardPile.getLastCard());
+            System.out.println(lastCard);
         
             System.out.println("Choose card index:");
             System.out.println(player);
 
             card = player.extractCard(sca.promptUser());
 
-            if (discardPile.getLastCard().discardMatchesNew(card)) {
+            if (lastCard.discardMatchesNew(card)) {
                 System.out.println("Card successfully put");
                 turnOver = true;
             } else {

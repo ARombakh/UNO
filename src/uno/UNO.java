@@ -81,7 +81,7 @@ public class UNO {
 
         while (uno.checkPlayersCards(players) == null) {
             controller = new Controller(deck, players[currPlayerIX],
-                    discardPile);
+                    discardPile.getLastCard());
             System.out.println("Player " + currPlayerIX);
             discardPile.addCard(controller.makeTurn());
             currPlayerIX = uno.nextPlayer(currPlayerIX,
