@@ -24,14 +24,14 @@ public class Controller {
     }
     
     public void takeCards() {
-        int cardsToTake = takeCards(lastCard);
+        int cardsToTake = cntTakeCards(lastCard);
         for (int i = 0; i < cardsToTake; i++) {
             player.addCard(deck.extractRandCard());
         }
         System.out.println(cardsToTake + " cards taken");
     }
     
-    public int takeCards(Card card) {
+    public int cntTakeCards(Card card) {
         if (card.getCardtype() == Card.CardType.DRAW_2) {
             return 2;
         }
