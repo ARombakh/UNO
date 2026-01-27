@@ -80,7 +80,8 @@ public class UNO {
         boolean isSkip = false;
 
         while (uno.checkPlayersCards(players) == null) {
-            controller = new Controller(deck, players[currPlayerIX],
+            controller = new Controller(deck, players,
+                    currPlayerIX,
                     discardPile.getLastCard());
             System.out.println("Player " + currPlayerIX);
             card = controller.makeTurn(isSkip);   // isSkip

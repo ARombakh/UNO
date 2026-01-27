@@ -4,22 +4,54 @@
  */
 package uno;
 
+import java.util.ArrayList;
 import uno.Card.Color;
+import uno.UNO;
 
 /**
  *
  * @author artyom
  */
 public class PlayerAction {
-    private Player player;
-    private Scanning sca;
-    private Action action;
+    private Player[] players;
+    private int playerIX;
+    private ArrayList<MenuItem> menuItems;
     
-    public PlayerAction(Player player) {
-        this.player = player;
-        sca = new Scanning();
+    public PlayerAction(Player[] players, int playerIX) {
+        this.players = players;
+        this.playerIX = playerIX;
+        menuItems = new ArrayList<>();
     }
-    
+
+    public ArrayList<MenuItem> getMenuItems() {
+        return menuItems;
+    }
+
+    public void formMenuList() {
+        MenuItem menuItem = new MenuItem("Take Card\n", new TakeCard());
+        
+        menuItems.add(menuItem);
+        
+        Card card;
+        
+        for (int i = 0; i < players[playerIX].getSize(); i++) {
+            card = players[playerIX].getCard(i);
+            
+            menuItem = new MenuItem("Play\n" + card.toString(),
+                    new PlayCard(i));
+            
+            menuItems.add(menuItem);
+        }
+        
+        for (int i = 0; i < players.length; i++) {
+            if (i != playerIX) {
+                menuItem = new MenuItem("Spot player " + i + "\n", 
+                    new SpotPlayer(playerIX));
+                menuItems.add(menuItem);
+            }
+        }
+    }
+    /*
     public Action askAction() {
         int offset = 0;
                         
@@ -66,5 +98,45 @@ public class PlayerAction {
         }
         
         return null;
-    }
+    }*/
+    /*
+    public static void main(String[] args) {
+        Deck deck = new Deck();
+        deck.initDeck();
+        
+        Player[] players = new Player[UNO.PLAYERS_QTY];
+        
+        for (int i = 0; i < UNO.PLAYERS_QTY; i++) {
+           players[i] = new Player();
+           players[i].fillHand(deck);
+        }
+        
+        int currPlayer = 0;
+        
+        PlayerAction pa = new PlayerAction(players, currPlayer);
+        
+        pa.formMenuList();
+        
+        for (int i = 0; i < pa.menuItems.size(); i++) {
+            System.out.print(i + ". " + pa.menuItems.get(i));
+        }
+        
+        UI ui = new UI();
+        
+        Action action = ui.askAction(pa.menuItems);
+        
+        if (action instanceof TakeCard) {
+            System.out.println("TakeCard");
+        }
+        
+        if (action instanceof PlayCard pc) {
+            System.out.println("Playing card " +
+                    players[currPlayer].extractCard(pc.getCardIX()));
+        }
+        
+        if (action instanceof SpotPlayer sp) {
+            System.out.println("Spotting player " +
+                    players[sp.getPlayerIX()].toString());
+        }
+    }*/
 }

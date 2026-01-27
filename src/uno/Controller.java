@@ -14,19 +14,23 @@ import static uno.UNO.PLAYERS_QTY;
  */
 public class Controller {
     private Deck deck;
-    private Player player;
+    private Player[] players;
+    private int playerIX;
     public Card lastCard;
     
-    public Controller(Deck deck, Player player, Card lastCard) {
+    public Controller(Deck deck, Player[] players,
+            int playerIX,
+            Card lastCard) {
         this.deck = deck;
-        this.player = player;
+        this.players = players;
+        this.playerIX = playerIX;
         this.lastCard = lastCard;
     }
     
     public void takeCards() {
         int cardsToTake = cntTakeCards(lastCard);
         for (int i = 0; i < cardsToTake; i++) {
-            player.addCard(deck.extractRandCard());
+            players[playerIX].addCard(deck.extractRandCard());
         }
         System.out.println(cardsToTake + " cards taken");
     }
@@ -42,15 +46,15 @@ public class Controller {
         
         return 0;
     }
-    
+    /*
     public Color chooseColor() {
         PlayerAction pa = new PlayerAction(player);
         
         return pa.askColor();
     }
-    
+    */
     public Card playCard() {
-        Scanning sca = new Scanning();
+//        Scanning sca = new Scanning();
         boolean turnOver = false;
         Card card = null;
 
@@ -58,19 +62,22 @@ public class Controller {
             System.out.println("Current card to match:");
             System.out.println(lastCard);
 
-            PlayerAction pa = new PlayerAction(player);
-            Action action = pa.askAction();
+            PlayerAction pa = new PlayerAction(players, playerIX);
+            pa.formMenuList();
+            UI ui = new UI();
+            Action action = ui.askAction(pa.getMenuItems());
             
             if (action instanceof PlayCard playCard) {
                 int cardIX = playCard.getCardIX();
                 
-                card = player.getCard(cardIX);
+                card = players[playerIX].getCard(cardIX);
 
                 if (lastCard.discardMatchesNew(card)) {
-                    card = player.extractCard(cardIX);
+                    card = players[playerIX].extractCard(cardIX);
                     if (card.getCardtype() == Card.CardType.WILD_DRAW_4 ||
                         card.getCardtype() == Card.CardType.WILD) {
-                        card.setColor(chooseColor());
+                        /*card.setColor(chooseColor()); // Debug*/
+                        card.setColor(Color.YELLOW);
                     }
                     System.out.println("Card successfully put");
                     turnOver = true;
@@ -81,7 +88,7 @@ public class Controller {
             } else {
                 if (action instanceof TakeCard) {
                     card = deck.extractRandCard();
-                    player.addCard(card);
+                    players[playerIX].addCard(card);
                     System.out.println("The player took card:\n" + card);
                     card = null;
                     turnOver = true;
