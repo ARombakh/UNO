@@ -46,15 +46,15 @@ public class Controller {
         
         return 0;
     }
-    /*
+
     public Color chooseColor() {
-        PlayerAction pa = new PlayerAction(player);
-        
-        return pa.askColor();
+        PlayerAction pa = new PlayerAction(players, playerIX);
+        UI ui = new UI();
+        ChooseColor chooseColor = (ChooseColor)ui.askAction(pa.formColorMenu());
+        return chooseColor.getColor();
     }
-    */
+
     public Card playCard() {
-//        Scanning sca = new Scanning();
         boolean turnOver = false;
         Card card = null;
 
@@ -63,9 +63,9 @@ public class Controller {
             System.out.println(lastCard);
 
             PlayerAction pa = new PlayerAction(players, playerIX);
-            pa.formMenuList();
+
             UI ui = new UI();
-            Action action = ui.askAction(pa.getMenuItems());
+            Action action = ui.askAction(pa.formInitMenuList());
             
             if (action instanceof PlayCard playCard) {
                 int cardIX = playCard.getCardIX();
@@ -76,8 +76,7 @@ public class Controller {
                     card = players[playerIX].extractCard(cardIX);
                     if (card.getCardtype() == Card.CardType.WILD_DRAW_4 ||
                         card.getCardtype() == Card.CardType.WILD) {
-                        /*card.setColor(chooseColor()); // Debug*/
-                        card.setColor(Color.YELLOW);
+                        card.setColor(chooseColor());
                     }
                     System.out.println("Card successfully put");
                     turnOver = true;

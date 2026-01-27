@@ -15,21 +15,23 @@ import uno.UNO;
 public class PlayerAction {
     private Player[] players;
     private int playerIX;
-    private ArrayList<MenuItem> menuItems;
+    /*private ArrayList<MenuItem> menuItems;*/
     
     public PlayerAction(Player[] players, int playerIX) {
         this.players = players;
         this.playerIX = playerIX;
-        menuItems = new ArrayList<>();
+        /*menuItems = new ArrayList<>();*/
     }
-
+    /*
     public ArrayList<MenuItem> getMenuItems() {
         return menuItems;
-    }
+    }*/
 
-    public void formMenuList() {
-        MenuItem menuItem = new MenuItem("Take Card\n", new TakeCard());
+    public ArrayList<MenuItem> formInitMenuList() {        
+        ArrayList<MenuItem> menuItems = new ArrayList<>();
         
+        MenuItem menuItem = new MenuItem("Take Card\n", new TakeCard());
+
         menuItems.add(menuItem);
         
         Card card;
@@ -50,6 +52,8 @@ public class PlayerAction {
                 menuItems.add(menuItem);
             }
         }
+        
+        return menuItems;
     }
     /*
     public Action askAction() {
@@ -75,68 +79,18 @@ public class PlayerAction {
         
         return action;
     }
-    
-    public Color askColor() {
-        int menuItem = 0;
-        System.out.println("Choose color:");
+    */
+    public ArrayList<MenuItem> formColorMenu() {
+        ArrayList<MenuItem> menuItems = new ArrayList<>();
         
-        for (Object value : Color.values()) {
-            System.out.println(menuItem + ". " + value.toString());
-            menuItem++;
+        MenuItem menuItem;
+        
+        for (Color value : Color.values()) {
+            menuItem = new MenuItem(value.toString() + "\n",
+                    new ChooseColor(value));
+            menuItems.add(menuItem);
         }
-        
-        int option = sca.promptUser();
-        action = new ChooseColor(option);
-        
-        menuItem = 0;
-        
-        for (Object value : Color.values()) {
-            if (option == menuItem) {
-                return (Color) value;
-            }
-            menuItem++;
-        }
-        
-        return null;
-    }*/
-    /*
-    public static void main(String[] args) {
-        Deck deck = new Deck();
-        deck.initDeck();
-        
-        Player[] players = new Player[UNO.PLAYERS_QTY];
-        
-        for (int i = 0; i < UNO.PLAYERS_QTY; i++) {
-           players[i] = new Player();
-           players[i].fillHand(deck);
-        }
-        
-        int currPlayer = 0;
-        
-        PlayerAction pa = new PlayerAction(players, currPlayer);
-        
-        pa.formMenuList();
-        
-        for (int i = 0; i < pa.menuItems.size(); i++) {
-            System.out.print(i + ". " + pa.menuItems.get(i));
-        }
-        
-        UI ui = new UI();
-        
-        Action action = ui.askAction(pa.menuItems);
-        
-        if (action instanceof TakeCard) {
-            System.out.println("TakeCard");
-        }
-        
-        if (action instanceof PlayCard pc) {
-            System.out.println("Playing card " +
-                    players[currPlayer].extractCard(pc.getCardIX()));
-        }
-        
-        if (action instanceof SpotPlayer sp) {
-            System.out.println("Spotting player " +
-                    players[sp.getPlayerIX()].toString());
-        }
-    }*/
+
+        return menuItems;
+    }
 }

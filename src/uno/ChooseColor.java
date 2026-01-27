@@ -4,18 +4,20 @@
  */
 package uno;
 
+import uno.Card.Color;
+
 /**
  *
  * @author artyom
  */
 public class ChooseColor extends Action {
-    private int colorIX;
+    private Color color;
     
-    public ChooseColor(int colorIX) {
-        this.colorIX = colorIX;
+    public ChooseColor(Color color) {
+        this.color = color;
     }
 
-    public int getColorIX() {
-        return colorIX;
+    public Color getColor() {
+        return color;
     }
 }

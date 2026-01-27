@@ -8,6 +8,6 @@ package uno;
  *
  * @author artyom
  */
-public class Action {
+public abstract class Action {
 
 }
