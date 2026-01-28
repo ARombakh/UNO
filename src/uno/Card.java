@@ -69,13 +69,13 @@ public class Card {
         
         // If the color of card in hand is null, it means it is wildcard and
         // therefore true
-        if (c.color == null || this.color == c.color) return true;
+        if (c.color == null ||
+                this.color == null ||
+                this.color == c.color) return true;
 
-        if (this.cardtype == CardType.NUMBER &&
+        return this.cardtype == CardType.NUMBER &&
             c.cardtype == CardType.NUMBER &&
-            this.number.equals(c.number)) return true;
-        
-        return false;
+            this.number.equals(c.number);
     }
     
     @Override
