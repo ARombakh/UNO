@@ -13,12 +13,37 @@ import java.util.ArrayList;
  */
 public class Player {
     private ArrayList<Card> cards;
+    private boolean unoSaid;
     
     public Player() {
         cards = new ArrayList<>();
+        unoSaid = false;
+    }
+    
+    public ArrayList<Card> getCards() {
+        return cards;
+    }
+
+    public boolean isUnoSaid() {
+        return unoSaid;
+    }
+
+    public boolean setUnoSaid(boolean unoSaid) {
+        if (unoSaid) {
+            if (cards.size() == 1) {
+                this.unoSaid = unoSaid;
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            this.unoSaid = unoSaid;
+            return true;
+        }
     }
     
     public int getSize() {
+        cards.trimToSize();
         return cards.size();
     }
     
@@ -28,6 +53,9 @@ public class Player {
     
     public void addCard(Card card) {
         cards.add(card);
+        if (cards.size() > 1) {
+            this.setUnoSaid(false);
+        }
     }
     
     public void fillHand(Deck deck) {
@@ -39,30 +67,7 @@ public class Player {
     public Card extractCard(int index) {
         return cards.remove(index);
     }
-    
-    public ArrayList<String> outputOptions(boolean takeCardExists,
-            boolean chooseColor) {
-        ArrayList<String> options = new ArrayList<>();
         
-        if(takeCardExists) {
-            options.add("Take card from the deck\n");
-        }
-        
-        options.add("Say Uno\n");
-        
-        if (chooseColor) {
-            for (Card.Color color : Card.Color.values()) {
-                options.add(color.name());
-            }
-        } else {
-            for (Card card : cards) {
-                options.add(card.toString());
-            }            
-        }
-
-        return options;
-    }
-    
     @Override
     public String toString() {
         String result = "";

@@ -15,17 +15,23 @@ import uno.UNO;
 public class PlayerAction {
     private Player[] players;
     private int playerIX;
-    /*private ArrayList<MenuItem> menuItems;*/
     
     public PlayerAction(Player[] players, int playerIX) {
         this.players = players;
         this.playerIX = playerIX;
-        /*menuItems = new ArrayList<>();*/
     }
-    /*
-    public ArrayList<MenuItem> getMenuItems() {
+    
+    public ArrayList<MenuItem> formUnoMenuList() {
+        ArrayList<MenuItem> menuItems = new ArrayList<>();
+        
+        MenuItem menuItem = new MenuItem("Say \"Uno!\"\n", new SayUno(true));
+        menuItems.add(menuItem);
+        
+        menuItem = new MenuItem("Don't say\n", new SayUno(false));
+        menuItems.add(menuItem);
+        
         return menuItems;
-    }*/
+    }
 
     public ArrayList<MenuItem> formInitMenuList() {        
         ArrayList<MenuItem> menuItems = new ArrayList<>();
@@ -55,31 +61,7 @@ public class PlayerAction {
         
         return menuItems;
     }
-    /*
-    public Action askAction() {
-        int offset = 0;
-                        
-        System.out.println("Choose action:");
-        System.out.println("0. Take a card");
 
-        offset++;
-        
-        for (int i = 0; i < player.getSize(); i++) {
-            System.out.print((i+offset) + ". " + player.getCard(i));
-        }
-        
-        int option = sca.promptUser();
-        
-        if (option == 0) {
-            action = new TakeCard();
-            
-        } else {
-            action = new PlayCard(option - offset);
-        }
-        
-        return action;
-    }
-    */
     public ArrayList<MenuItem> formColorMenu() {
         ArrayList<MenuItem> menuItems = new ArrayList<>();
         

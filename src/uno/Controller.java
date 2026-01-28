@@ -17,6 +17,7 @@ public class Controller {
     private Player[] players;
     private int playerIX;
     public Card lastCard;
+    private final static int CARDS_FINE = 4;
     
     public Controller(Deck deck, Player[] players,
             int playerIX,
@@ -27,12 +28,15 @@ public class Controller {
         this.lastCard = lastCard;
     }
     
-    public void takeCards() {
-        int cardsToTake = cntTakeCards(lastCard);
+    public void takeCards(Integer cardsToTake) {
+        if(cardsToTake == null) {
+            cardsToTake = cntTakeCards(lastCard);
+        }
         for (int i = 0; i < cardsToTake; i++) {
             players[playerIX].addCard(deck.extractRandCard());
         }
-        System.out.println(cardsToTake + " cards taken");
+        System.out.println(cardsToTake + " cards taken by player "
+                        + playerIX);
     }
     
     public int cntTakeCards(Card card) {
@@ -50,8 +54,23 @@ public class Controller {
     public Color chooseColor() {
         PlayerAction pa = new PlayerAction(players, playerIX);
         UI ui = new UI();
+        System.out.println("Select a color of the WILD CARD:");
         ChooseColor chooseColor = (ChooseColor)ui.askAction(pa.formColorMenu());
         return chooseColor.getColor();
+    }
+    
+    public void sayUno() {
+        PlayerAction pa = new PlayerAction(players, playerIX);
+        UI ui = new UI();
+        System.out.println("Choose to say \"Uno!\"");
+        
+        SayUno sayUno = (SayUno)ui.askAction(pa.formUnoMenuList());
+        if (!players[playerIX].isUnoSaid()) {
+            if (!players[playerIX].setUnoSaid(sayUno.isSayUno())) {
+                takeCards(CARDS_FINE);
+                System.out.println("Uno said in incorrect situation!");
+            }
+        }
     }
 
     public Card playCard() {
@@ -65,6 +84,7 @@ public class Controller {
             PlayerAction pa = new PlayerAction(players, playerIX);
 
             UI ui = new UI();
+            System.out.println("Select action:\n");
             Action action = ui.askAction(pa.formInitMenuList());
             
             if (action instanceof PlayCard playCard) {
@@ -73,7 +93,7 @@ public class Controller {
                 card = players[playerIX].getCard(cardIX);
 
                 if (lastCard.discardMatchesNew(card)) {
-                    card = players[playerIX].extractCard(cardIX);
+                    card = players[playerIX].extractCard(cardIX);                    
                     if (card.getCardtype() == Card.CardType.WILD_DRAW_4 ||
                         card.getCardtype() == Card.CardType.WILD) {
                         card.setColor(chooseColor());
@@ -83,7 +103,7 @@ public class Controller {
                 } else {
                     System.out.println("Can't use this card, "
                             + "choose another one");
-                } 
+                }
             } else {
                 if (action instanceof TakeCard) {
                     card = deck.extractRandCard();
@@ -100,12 +120,30 @@ public class Controller {
         return card;
     }
        
-    public Card makeTurn(boolean isSkip) {        
-        if (!isSkip) {
-            return playCard();
-        } else {
-            takeCards();
-            return null;
+    public Card makeTurn(boolean isSkip) {
+        Card card;
+
+        for (int i = 0; i < players.length; i++) {
+            if (i != playerIX) {
+                System.out.println("Player " + i + " has " +
+                        players[i].getSize() + " cards. " +
+                        (players[i].isUnoSaid() ?  "Uno said" : ""));
+            }
         }
+        
+        System.out.println("\n\nPlayer's " + playerIX + " turn");
+        
+        if (!isSkip) {
+            card = playCard();
+        } else {
+            System.out.println("The Player " + playerIX +
+                " skips the turn");            
+            takeCards(null);
+            card = null;
+        }
+        
+        sayUno();
+
+        return card;
     }
 }

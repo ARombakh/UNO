@@ -83,16 +83,13 @@ public class UNO {
             controller = new Controller(deck, players,
                     currPlayerIX,
                     discardPile.getLastCard());
-            System.out.println("Player " + currPlayerIX);
             card = controller.makeTurn(isSkip);   // isSkip
             if (card != null) {
                 discardPile.addCard(card);
                 isSkip = uno.isSkip(card);
             } else {
-                System.out.println("The Player " + currPlayerIX +
-                    " skips the turn");
                 isSkip = false;
-            }
+            }            
             currPlayerIX = uno.nextPlayer(currPlayerIX,
                     discardPile.getLastCard());
         }
