@@ -72,6 +72,45 @@ public class Controller {
             }
         }
     }
+    /*
+    public Card playNewCard(int cardIX) {
+        PlayerAction pa = new PlayerAction(players, playerIX);
+        UI ui = new UI();
+        System.out.println("Play card or skip turn:\n");
+        Action action = ui.askAction(pa.formOneCard(cardIX));
+        
+        if (action instanceof SkipTurn) {
+            return null;
+        } else {
+            if (action instanceof PlayCard playCard) {
+                int cardIX = playCard.getCardIX();
+                
+                card = players[playerIX].getCard(cardIX);
+            }
+        }
+    }
+    */
+    public Card playCardCommon(PlayCard playCard) {
+        Card card;
+        
+        int cardIX = playCard.getCardIX();
+
+        card = players[playerIX].getCard(cardIX);
+
+        if (lastCard.discardMatchesNew(card)) {
+            card = players[playerIX].extractCard(cardIX);                    
+            if (card.getCardtype() == Card.CardType.WILD_DRAW_4 ||
+                card.getCardtype() == Card.CardType.WILD) {
+                card.setColor(chooseColor());
+            }
+            System.out.println("Card successfully put");
+            return card;
+        } else {
+            System.out.println("Can't use this card, "
+                    + "choose another one");
+            return null;
+        }
+    }
 
     public Card playCard() {
         boolean turnOver = false;
@@ -88,32 +127,18 @@ public class Controller {
             Action action = ui.askAction(pa.formInitMenuList());
             
             if (action instanceof PlayCard playCard) {
-                int cardIX = playCard.getCardIX();
-                
-                card = players[playerIX].getCard(cardIX);
-
-                if (lastCard.discardMatchesNew(card)) {
-                    card = players[playerIX].extractCard(cardIX);                    
-                    if (card.getCardtype() == Card.CardType.WILD_DRAW_4 ||
-                        card.getCardtype() == Card.CardType.WILD) {
-                        card.setColor(chooseColor());
-                    }
-                    System.out.println("Card successfully put");
+                card = playCardCommon(playCard);
+                if (card != null) {
                     turnOver = true;
-                } else {
-                    System.out.println("Can't use this card, "
-                            + "choose another one");
                 }
             } else {
                 if (action instanceof TakeCard) {
                     card = deck.extractRandCard();
-                    players[playerIX].addCard(card);
                     System.out.println("The player took card:\n" + card);
-                    card = null;
+//                    card = playNewCard(players[playerIX].addCard(card));
                     turnOver = true;
                 } else {
                     if (action instanceof SpotPlayer sp) {
-                        System.out.printf("Spotted player %d\n", sp.getPlayerIX());   // Debug
                         spotPlayer(sp.getPlayerIX());
                     } else {
                         throw new IllegalArgumentException("Illegal action");

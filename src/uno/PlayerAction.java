@@ -32,6 +32,17 @@ public class PlayerAction {
         
         return menuItems;
     }
+    
+    public ArrayList<MenuItem> formOneCard(int cardIX) {
+        ArrayList<MenuItem> menuItems = new ArrayList<>();
+        MenuItem menuItem = new MenuItem("Skip turn", new SkipTurn());
+        menuItems.add(menuItem);
+        
+        menuItem = new MenuItem("Play\n" + players[playerIX].getCard(cardIX),
+                new PlayCard(cardIX));
+        
+        return menuItems;
+    }
 
     public ArrayList<MenuItem> formInitMenuList() {        
         ArrayList<MenuItem> menuItems = new ArrayList<>();

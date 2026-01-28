@@ -50,11 +50,13 @@ public class Player {
         return cards.get(i);
     }
     
-    public void addCard(Card card) {
+    public int addCard(Card card) {
         cards.add(card);
         if (cards.size() > 1) {
             this.setUnoSaid(false);
         }
+        
+        return cards.size();
     }
     
     public void fillHand(Deck deck) {
