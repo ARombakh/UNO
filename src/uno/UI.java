@@ -12,15 +12,24 @@ import java.util.ArrayList;
  */
 public class UI {   
     public Action askAction(ArrayList<MenuItem> menu) {
-        int option;
+        int option = -1;
+        boolean tryingInput = true;
         Scanning sca = new Scanning();
         
         for (int i = 0; i < menu.size(); i++) {
             System.out.println(i + ". " + menu.get(i));
         }
-        
-        System.out.println("Select menu item:");
-        option = sca.promptUser();
+
+        while (tryingInput) {
+            option = sca.promptUser();
+            
+            if (option < 0 || option >= menu.size()) {
+                System.out.println("The number " + option + " cannot be " +
+                        "selected. Choose another number");
+            } else {
+                tryingInput = false;
+            }
+        }
         
         return menu.get(option).getAction();
     }
