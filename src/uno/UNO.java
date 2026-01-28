@@ -9,7 +9,7 @@ package uno;
  * @author artyom
  */
 public class UNO {
-    public static final int CARDS_ON_HAND = 7;
+    public static final int CARDS_ON_HAND = 2;
     public static final int PLAYERS_QTY = 3;
     private int direction;
     

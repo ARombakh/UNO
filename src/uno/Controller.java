@@ -17,7 +17,7 @@ public class Controller {
     private Player[] players;
     private int playerIX;
     public Card lastCard;
-    private final static int CARDS_FINE = 4;
+    public final static int CARDS_FINE = 4;
     
     public Controller(Deck deck, Player[] players,
             int playerIX,
@@ -112,12 +112,28 @@ public class Controller {
                     card = null;
                     turnOver = true;
                 } else {
-                    throw new IllegalArgumentException("Illegal action");
+                    if (action instanceof SpotPlayer sp) {
+                        System.out.printf("Spotted player %d\n", sp.getPlayerIX());   // Debug
+                        spotPlayer(sp.getPlayerIX());
+                    } else {
+                        throw new IllegalArgumentException("Illegal action");
+                    }
                 }
             }
         }
 
         return card;
+    }
+    
+    public void spotPlayer(int playerIXsp) {
+        if (!players[playerIXsp].spotted(deck)) {
+            System.out.println("Wrong spotting. Player " + playerIX + 
+                    " takes " + CARDS_FINE + " cards");
+            takeCards(CARDS_FINE);
+        } else {
+            System.out.println("Correct spotting. Player " + playerIXsp +
+                    " takes " + CARDS_FINE + " cards");
+        }
     }
        
     public Card makeTurn(boolean isSkip) {

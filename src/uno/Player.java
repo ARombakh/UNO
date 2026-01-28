@@ -6,7 +6,6 @@ package uno;
 
 import java.util.ArrayList;
 
-
 /**
  *
  * @author artyom
@@ -66,6 +65,17 @@ public class Player {
     
     public Card extractCard(int index) {
         return cards.remove(index);
+    }
+    
+    public boolean spotted(Deck deck) {
+        if (!unoSaid && cards.size() == 1) {
+            for (int i = 0; i < Controller.CARDS_FINE; i++) {
+                addCard(deck.extractRandCard());
+            }
+            return true;
+        } else {
+            return false;
+        }
     }
         
     @Override
