@@ -74,26 +74,28 @@ public class Controller {
     }
 
     public Card playNewCard(int cardIX) {
+        boolean askingCard = true;
         PlayerAction pa = new PlayerAction(players, playerIX);
         UI ui = new UI();
-        System.out.println("Play card or skip turn:\n");
-        Action action = ui.askAction(pa.formOneCard(cardIX));
-        Card card;
+        Card card = null;
         
-        if (action instanceof SkipTurn) {
-            return null;
-        } else {
-            if (action instanceof PlayCard playCard) {
-                card = playCardCommon(playCard);
-                if (card != null) {
-                    return card;
-                } else {
-                    return null;
-                }
+        while (askingCard) {
+            System.out.println("Play taken card or skip turn:\n");
+            Action action = ui.askAction(pa.formOneCard(cardIX));
+            if (action instanceof SkipTurn) {
+                card = null;
+                askingCard = false;
             } else {
-                throw new IllegalArgumentException("Illegal action");
+                if (action instanceof PlayCard playCard) {
+                    card = playCardCommon(playCard);
+                    askingCard = card == null;
+                } else {
+                    throw new IllegalArgumentException("Illegal action");
+                }
             }
         }
+        
+        return card;
     }
 
     public Card playCardCommon(PlayCard playCard) {
@@ -113,7 +115,7 @@ public class Controller {
             return card;
         } else {
             System.out.println("Can't use this card, "
-                    + "choose another one");
+                    + "choose another one or skip turn");
             return null;
         }
     }
