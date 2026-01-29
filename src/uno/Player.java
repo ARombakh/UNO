@@ -56,7 +56,7 @@ public class Player {
             this.setUnoSaid(false);
         }
         
-        return cards.size();
+        return cards.size() - 1;
     }
     
     public void fillHand(Deck deck) {

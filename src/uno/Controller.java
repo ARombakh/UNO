@@ -72,24 +72,30 @@ public class Controller {
             }
         }
     }
-    /*
+
     public Card playNewCard(int cardIX) {
         PlayerAction pa = new PlayerAction(players, playerIX);
         UI ui = new UI();
         System.out.println("Play card or skip turn:\n");
         Action action = ui.askAction(pa.formOneCard(cardIX));
+        Card card;
         
         if (action instanceof SkipTurn) {
             return null;
         } else {
             if (action instanceof PlayCard playCard) {
-                int cardIX = playCard.getCardIX();
-                
-                card = players[playerIX].getCard(cardIX);
+                card = playCardCommon(playCard);
+                if (card != null) {
+                    return card;
+                } else {
+                    return null;
+                }
+            } else {
+                throw new IllegalArgumentException("Illegal action");
             }
         }
     }
-    */
+
     public Card playCardCommon(PlayCard playCard) {
         Card card;
         
@@ -135,7 +141,7 @@ public class Controller {
                 if (action instanceof TakeCard) {
                     card = deck.extractRandCard();
                     System.out.println("The player took card:\n" + card);
-//                    card = playNewCard(players[playerIX].addCard(card));
+                    card = playNewCard(players[playerIX].addCard(card));
                     turnOver = true;
                 } else {
                     if (action instanceof SpotPlayer sp) {

@@ -40,6 +40,7 @@ public class PlayerAction {
         
         menuItem = new MenuItem("Play\n" + players[playerIX].getCard(cardIX),
                 new PlayCard(cardIX));
+        menuItems.add(menuItem);
         
         return menuItems;
     }
