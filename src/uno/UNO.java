@@ -79,7 +79,8 @@ public class UNO {
         Card card;
         boolean isSkip = false;
 
-        while (uno.checkPlayersCards(players) == null) {
+        Integer winningPlayer = 0;
+        while ((winningPlayer = uno.checkPlayersCards(players)) == null) {
             controller = new Controller(deck, players,
                     currPlayerIX,
                     discardPile.getLastCard());
@@ -93,5 +94,7 @@ public class UNO {
             currPlayerIX = uno.nextPlayer(currPlayerIX,
                     discardPile.getLastCard());
         }
+        
+        System.out.println("The player " + winningPlayer + " has won!");
     }
 }

@@ -80,6 +80,8 @@ public class Controller {
         Card card = null;
         
         while (askingCard) {
+            System.out.println("Current card to match:");
+            System.out.println(lastCard);
             System.out.println("Play taken card or skip turn:\n");
             Action action = ui.askAction(pa.formOneCard(cardIX));
             if (action instanceof SkipTurn) {
