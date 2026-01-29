@@ -13,10 +13,10 @@ import uno.UNO;
  * @author artyom
  */
 public class PlayerAction {
-    private Player[] players;
+    private ArrayList<Player> players;
     private int playerIX;
     
-    public PlayerAction(Player[] players, int playerIX) {
+    public PlayerAction(ArrayList<Player> players, int playerIX) {
         this.players = players;
         this.playerIX = playerIX;
     }
@@ -38,8 +38,8 @@ public class PlayerAction {
         MenuItem menuItem = new MenuItem("Skip turn", new SkipTurn());
         menuItems.add(menuItem);
         
-        menuItem = new MenuItem("Play\n" + players[playerIX].getCard(cardIX),
-                new PlayCard(cardIX));
+        menuItem = new MenuItem("Play\n"
+                + players.get(playerIX).getCard(cardIX), new PlayCard(cardIX));
         menuItems.add(menuItem);
         
         return menuItems;
@@ -54,8 +54,8 @@ public class PlayerAction {
         
         Card card;
         
-        for (int i = 0; i < players[playerIX].getSize(); i++) {
-            card = players[playerIX].getCard(i);
+        for (int i = 0; i < players.get(playerIX).getSize(); i++) {
+            card = players.get(playerIX).getCard(i);
             
             menuItem = new MenuItem("Play\n" + card.toString(),
                     new PlayCard(i));
@@ -63,7 +63,7 @@ public class PlayerAction {
             menuItems.add(menuItem);
         }
         
-        for (int i = 0; i < players.length; i++) {
+        for (int i = 0; i < players.size(); i++) {
             if (i != playerIX) {
                 menuItem = new MenuItem("Spot player " + i + "\n", 
                     new SpotPlayer(i));

@@ -4,6 +4,7 @@
  */
 package uno;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 import uno.Card.Color;
 import static uno.UNO.PLAYERS_QTY;
@@ -14,12 +15,12 @@ import static uno.UNO.PLAYERS_QTY;
  */
 public class Controller {
     private Deck deck;
-    private Player[] players;
+    private ArrayList<Player> players;
     private int playerIX;
     public Card lastCard;
     public final static int CARDS_FINE = 4;
     
-    public Controller(Deck deck, Player[] players,
+    public Controller(Deck deck, ArrayList<Player> players,
             int playerIX,
             Card lastCard) {
         this.deck = deck;
@@ -33,7 +34,7 @@ public class Controller {
             cardsToTake = cntTakeCards(lastCard);
         }
         for (int i = 0; i < cardsToTake; i++) {
-            players[playerIX].addCard(deck.extractRandCard());
+            players.get(playerIX).addCard(deck.extractRandCard());
         }
         System.out.println(cardsToTake + " cards taken by player "
                         + playerIX);
@@ -65,8 +66,8 @@ public class Controller {
         System.out.println("Choose to say \"Uno!\"");
         
         SayUno sayUno = (SayUno)ui.askAction(pa.formUnoMenuList());
-        if (!players[playerIX].isUnoSaid()) {
-            if (!players[playerIX].setUnoSaid(sayUno.isSayUno())) {
+        if (!players.get(playerIX).isUnoSaid()) {
+            if (!players.get(playerIX).setUnoSaid(sayUno.isSayUno())) {
                 takeCards(CARDS_FINE);
                 System.out.println("Uno said in incorrect situation!");
             }
@@ -105,10 +106,10 @@ public class Controller {
         
         int cardIX = playCard.getCardIX();
 
-        card = players[playerIX].getCard(cardIX);
+        card = players.get(playerIX).getCard(cardIX);
 
         if (lastCard.discardMatchesNew(card)) {
-            card = players[playerIX].extractCard(cardIX);                    
+            card = players.get(playerIX).extractCard(cardIX);                    
             if (card.getCardtype() == Card.CardType.WILD_DRAW_4 ||
                 card.getCardtype() == Card.CardType.WILD) {
                 card.setColor(chooseColor());
@@ -145,7 +146,7 @@ public class Controller {
                 if (action instanceof TakeCard) {
                     card = deck.extractRandCard();
                     System.out.println("The player took card:\n" + card);
-                    card = playNewCard(players[playerIX].addCard(card));
+                    card = playNewCard(players.get(playerIX).addCard(card));
                     turnOver = true;
                 } else {
                     if (action instanceof SpotPlayer sp) {
@@ -161,7 +162,7 @@ public class Controller {
     }
     
     public void spotPlayer(int playerIXsp) {
-        if (!players[playerIXsp].spotted(deck)) {
+        if (!players.get(playerIXsp).spotted(deck)) {
             System.out.println("Wrong spotting. Player " + playerIX + 
                     " takes " + CARDS_FINE + " cards");
             takeCards(CARDS_FINE);
@@ -174,11 +175,11 @@ public class Controller {
     public Card makeTurn(boolean isSkip) {
         Card card;
 
-        for (int i = 0; i < players.length; i++) {
+        for (int i = 0; i < players.size(); i++) {
             if (i != playerIX) {
                 System.out.println("Player " + i + " has " +
-                        players[i].getSize() + " cards. " +
-                        (players[i].isUnoSaid() ?  "Uno said" : ""));
+                        players.get(i).getSize() + " cards. " +
+                        (players.get(i).isUnoSaid() ?  "Uno said" : ""));
             }
         }
         

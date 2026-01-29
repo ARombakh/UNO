@@ -4,6 +4,8 @@
  */
 package uno;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author artyom
@@ -18,7 +20,7 @@ public class UNO {
             card.getCardtype() == Card.CardType.DRAW_2 ||
             card.getCardtype() == Card.CardType.WILD_DRAW_4;
     }
-
+    
     public int nextPlOrder(int playerIX) {
         if (playerIX + direction == -1) {
             return PLAYERS_QTY - 1;
@@ -42,9 +44,9 @@ public class UNO {
         return nextPlayerIX;
     }
     
-    public Integer checkPlayersCards(Player[] players) {
-        for (int i = 0; i < players.length; i++) {
-            if (players[i].getSize() == 0) {
+    public Integer checkPlayersCards(ArrayList<Player> players) {
+        for (int i = 0; i < players.size(); i++) {
+            if (players.get(i).getSize() == 0) {
                 return i;
             }
         }
@@ -62,11 +64,11 @@ public class UNO {
         Deck deck = new Deck();
         deck.initDeck();
         
-        Player[] players = new Player[PLAYERS_QTY];
+        ArrayList<Player> players = new ArrayList<>();
         
         for (int i = 0; i < PLAYERS_QTY; i++) {
-            players[i] = new Player();
-            players[i].fillHand(deck);
+//            players.get(i) = new Player();
+            players.get(i).fillHand(deck);
         }
 
         Deck discardPile = new Deck();
