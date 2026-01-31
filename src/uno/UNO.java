@@ -67,7 +67,7 @@ public class UNO {
         ArrayList<Player> players = new ArrayList<>();
         
         for (int i = 0; i < PLAYERS_QTY; i++) {
-//            players.get(i) = new Player();
+            players.add(new Player());
             players.get(i).fillHand(deck);
         }
 

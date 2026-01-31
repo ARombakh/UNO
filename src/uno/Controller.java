@@ -136,25 +136,25 @@ public class Controller {
             UI ui = new UI();
             System.out.println("Select action:\n");
             Action action = ui.askAction(pa.formInitMenuList());
-            
-            if (action instanceof PlayCard playCard) {
-                card = playCardCommon(playCard);
-                if (card != null) {
-                    turnOver = true;
-                }
-            } else {
-                if (action instanceof TakeCard) {
+
+            switch (action) {
+                case PlayCard playCard:
+                    card = playCardCommon(playCard);
+                    if (card != null) {
+                        turnOver = true;
+                    }
+                    break;
+                case TakeCard tc:
                     card = deck.extractRandCard();
                     System.out.println("The player took card:\n" + card);
                     card = playNewCard(players.get(playerIX).addCard(card));
                     turnOver = true;
-                } else {
-                    if (action instanceof SpotPlayer sp) {
-                        spotPlayer(sp.getPlayerIX());
-                    } else {
-                        throw new IllegalArgumentException("Illegal action");
-                    }
-                }
+                    break;
+                case SpotPlayer sp:
+                    spotPlayer(sp.getPlayerIX());
+                    break;    
+                default:
+                    throw new IllegalArgumentException("Illegal action");
             }
         }
 
