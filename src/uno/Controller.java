@@ -178,8 +178,8 @@ public class Controller {
         for (int i = 0; i < players.size(); i++) {
             if (i != playerIX) {
                 System.out.println("Player " + i + " has " +
-                        players.get(i).getSize() + " cards. " +
-                        (players.get(i).isUnoSaid() ?  "Uno said" : ""));
+                        players.get(i).getSize() + " cards." +
+                        (players.get(i).isUnoSaid() ?  " Uno said" : ""));
             }
         }
         
