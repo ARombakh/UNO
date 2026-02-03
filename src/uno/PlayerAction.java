@@ -21,9 +21,18 @@ public class PlayerAction {
         this.playerIX = playerIX;
     }
     
-    public ArrayList<MenuItem> formUnoMenuList() {
+    private ArrayList<MenuItem> formExitItem() {
         ArrayList<MenuItem> menuItems = new ArrayList<>();
         
+        MenuItem menuItem = new MenuItem("Exit game\n", new ExitGame());
+        menuItems.add(menuItem);
+        
+        return menuItems;
+    }
+
+    public ArrayList<MenuItem> formUnoMenuList() {
+        ArrayList<MenuItem> menuItems = formExitItem();
+
         MenuItem menuItem = new MenuItem("Say \"Uno!\"\n", new SayUno(true));
         menuItems.add(menuItem);
         
@@ -34,7 +43,7 @@ public class PlayerAction {
     }
     
     public ArrayList<MenuItem> formOneCard(int cardIX) {
-        ArrayList<MenuItem> menuItems = new ArrayList<>();
+        ArrayList<MenuItem> menuItems = formExitItem();       
         MenuItem menuItem = new MenuItem("Skip turn", new SkipTurn());
         menuItems.add(menuItem);
         
@@ -46,8 +55,8 @@ public class PlayerAction {
     }
 
     public ArrayList<MenuItem> formInitMenuList() {        
-        ArrayList<MenuItem> menuItems = new ArrayList<>();
-        
+        ArrayList<MenuItem> menuItems = formExitItem();
+
         MenuItem menuItem = new MenuItem("Take Card\n", new TakeCard());
 
         menuItems.add(menuItem);
@@ -75,8 +84,8 @@ public class PlayerAction {
     }
 
     public ArrayList<MenuItem> formColorMenu() {
-        ArrayList<MenuItem> menuItems = new ArrayList<>();
-        
+        ArrayList<MenuItem> menuItems = formExitItem();
+    
         MenuItem menuItem;
         
         for (Color value : Color.values()) {

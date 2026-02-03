@@ -87,6 +87,9 @@ public class UNO {
                     currPlayerIX,
                     discardPile.getLastCard());
             card = controller.makeTurn(isSkip);   // isSkip
+            if (players.get(currPlayerIX).isGameFinished() == true) {
+                break;
+            }
             if (card != null) {
                 discardPile.addCard(card);
                 isSkip = uno.isSkip(card);
@@ -97,6 +100,10 @@ public class UNO {
                     discardPile.getLastCard());
         }
         
-        System.out.println("The player " + winningPlayer + " has won!");
+        if (players.get(currPlayerIX).isGameFinished() == true) {
+            System.out.println("Game over! Finished by Player " + currPlayerIX);
+        } else {
+            System.out.println("The player " + winningPlayer + " has won!");            
+        }
     }
 }

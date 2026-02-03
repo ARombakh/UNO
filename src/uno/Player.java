@@ -13,10 +13,19 @@ import java.util.ArrayList;
 public class Player {
     private ArrayList<Card> cards;
     private boolean unoSaid;
+    private boolean gameFinished = false;
     
     public Player() {
         cards = new ArrayList<>();
         unoSaid = false;
+    }
+
+    public boolean isGameFinished() {
+        return gameFinished;
+    }
+
+    public void setGameFinished(boolean gameFinished) {
+        this.gameFinished = gameFinished;
     }
     
     public ArrayList<Card> getCards() {
