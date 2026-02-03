@@ -4,6 +4,7 @@
  */
 package uno;
 
+import java.io.File;
 import java.util.ArrayList;
 
 /**
@@ -11,6 +12,12 @@ import java.util.ArrayList;
  * @author artyom
  */
 public class UNO {
+    public static final String logFilePath = File.separator +
+            "home" + File.separator + "artyom" + File.separator +
+            "Documents" + File.separator + "Java";
+    
+    public static final String logFileName = "UNO log.txt";
+    
     public static final int CARDS_ON_HAND = 2;
     public static final int PLAYERS_QTY = 3;
     private int direction;
