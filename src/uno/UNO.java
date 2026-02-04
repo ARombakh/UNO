@@ -4,14 +4,18 @@
  */
 package uno;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.Locale;
+import java.util.ResourceBundle;
+import java.util.Scanner;
 
 /**
  *
  * @author artyom
  */
 public class UNO {
-    public static final int CARDS_ON_HAND = 2;
+    public static final int CARDS_ON_HAND = 1;
     public static final int PLAYERS_QTY = 3;
     private int direction;
     
@@ -80,6 +84,32 @@ public class UNO {
         int currPlayerIX = 0;
         Card card;
         boolean isSkip = false;
+        
+        System.out.println("Choose language:");
+        System.out.println("0. English");
+        System.out.println("1. Русский");
+        System.out.println("2. Deutsch");
+        
+        Scanner sc = new Scanner(System.in);
+        
+        int langOption;
+        langOption = sc.nextInt();
+        
+        switch (langOption) {
+            case 0:
+                Locale.setDefault(Locale.of("EN", "EN"));
+                break;
+            case 1:
+                Locale.setDefault(Locale.of("RU", "RU"));
+                break;
+            case 2:
+                Locale.setDefault(Locale.of("DE", "DE"));
+                break;
+            default:
+                throw new AssertionError();
+        }
+        
+        var text = ResourceBundle.getBundle("uno.messages");
 
         Integer winningPlayer = 0;
         while ((winningPlayer = uno.checkPlayersCards(players)) == null) {
@@ -97,6 +127,7 @@ public class UNO {
                     discardPile.getLastCard());
         }
         
-        System.out.println("The player " + winningPlayer + " has won!");
+        System.out.println(MessageFormat.format(
+                text.getString("win"), winningPlayer));
     }
 }
