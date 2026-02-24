@@ -1,0 +1,69 @@
+Spring Boot Console Application
+
+Что нужно понять:
+  •  как поднимается Spring Context
+  •  где точка входа для CLI
+  •  как писать консольное меню, не ломая архитектуру
+
+ Основные материалы
+1. Серия докладов Борисова Спринг Потрошитель(Первые два обязательно): https://www.youtube.com/watch?v=BmBr5diz8WA&list=PL6yLoZ_3Y0HKGL3F7vv2SNSrA3TkbXtBX
+2. Spring Boot Console Application (Java, CommandLineRunner). Хорошее, короткое объяснение + пример на Java: https://www.baeldung.com/spring-boot-console-app
+3. CommandLineRunner vs ApplicationRunner. Чем отличаются и что выбрать https://www.baeldung.com/spring-boot-commandlinerunner-vs-applicationrunner
+
+
+Гексагональная архитектура (Ports & Adapters, Java)
+
+Здесь важен не код, а мышление.
+
+Обязательное чтение
+  1.  Оригинальная статья Аллистера Кокберна. Это обязательно к прочтению, даже если не всё сразу понятно: https://alistair.cockburn.us/hexagonal-architecture/
+
+Прикладные объяснения (Java + Spring)
+  2.  Hexagonal Architecture with Spring Boot (Java). Очень хорошо объясняет: что такое port, что такое adapter, где application layer.  https://www.baeldung.com/hexagonal-architecture-ddd-spring
+  3.  Ports and Adapters explained (Java context). Хорошее объяснение на уровне “как это выглядит в коде”: https://reflectoring.io/spring-hexagonal/
+
+
+Консольный ввод в Java (для меню)
+  1.  Чтение ввода из консоли в Java (Scanner / BufferedReader): https://www.geeksforgeeks.org/ways-to-read-input-from-console-in-java/
+
+
+User Story: Старт игры в консольном приложении
+
+Как игрок,
+я хочу запустить консольное приложение UNO и начать новую игровую сессию,
+чтобы подготовить основу для одновременной игры в несколько сессий и дальнейшего сохранения состояния.
+
+Контекст
+
+На текущей итерации мы делаем только меню и сценарий старта, без реализации логики выбора первого игрока.
+
+Acceptance Criteria
+
+AC1 — Приложение запускается как Spring Boot CLI
+  •  Есть Spring Boot приложение (Maven).
+  •  При запуске появляется главное меню:
+        1. Начать играть
+        0. Выход
+
+AC2 — Переход на меню старта игры
+При выборе 1 показывается меню старта игры:
+  •  1. Выбрать первого игрока рандомно
+  •  2. Назначить первого игрока
+  •  0. Назад
+
+AC3 — Заглушки вместо бизнес-логики
+  •  При выборе 1 или 2 приложение не падает непредсказуемо, а:
+  •  либо печатает понятное сообщение Not implemented yet
+  •  либо выбрасывает контролируемое исключение (например, UnsupportedOperationException("Not implemented yet"))
+  •  После этого пользователь возвращается в меню старта игры (или приложение завершается — допустимо, но лучше возвращаться).
+
+AC4 — Подготовка под “несколько игровых сессий”
+  •  При старте игры создаётся идентификатор игровой сессии (пока в памяти), и он печатается в консоль, например:
+Game started. SessionId=...
+  •  Хранение в Postgres на этом шаге не требуется, но структура должна намекать, что оно будет (порт/репозиторий).
+
+Definition of Done
+  •  Код собирается и запускается одной командой
+  •  Меню работает по критериям выше
+  •  Есть минимальная структура пакетов под hexagonal
+  •  Есть README с инструкцией запуска (1–3 команды)
